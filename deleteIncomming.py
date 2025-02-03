@@ -11,10 +11,10 @@ from alive_progress import alive_bar
 import sys
 # Configuration
 TOKEN = sys.argv[1]
-BANNED_FOLDER = "C:/kieran/bannedImages"
-BANNED_MEDIA_FILE = "C:/kieran/bannedMedia.txt"
-DOWNLOAD_DIR = "C:/kieran/downloadTemp"
-LAST_CLEAR_FILE = "C:/kieran/lastClear.txt"
+BANNED_FOLDER = "bannedImages"
+BANNED_MEDIA_FILE = "bannedMedia.txt"
+DOWNLOAD_DIR = "downloadTemp"
+LAST_CLEAR_FILE = "lastClear.txt"
 SCAN_OLD_MESSAGES = True  # Toggle between True/False to switch modes
 BANNED_YOUTUBE_KEYWORDS = ["squid", "456", "player 456", "games", "fin"]
 # Ensure directories exist
