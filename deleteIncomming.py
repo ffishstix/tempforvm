@@ -19,34 +19,10 @@ SCAN_OLD_MESSAGES = True  # Toggle between True/False to switch modes
 BANNED_YOUTUBE_KEYWORDS = ["squid", "456", "player 456", "games", "fin"]
 # Ensure directories exist
 os.makedirs(DOWNLOAD_DIR, exist_ok=True)
-import logging  # Add this import at the top of the file
-from logging.handlers import RotatingFileHandler
+
 
 # Configure logging for debugging purposes
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    handlers=[
-        logging.StreamHandler(),
-        RotatingFileHandler('discord_bot_errors.log', maxBytes=1024, backupCount=3)
-    ]
-)
 
-def setup_logger():
-    logger = logging.getLogger(__name__)
-    logger.setLevel(logging.INFO)
-
-    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-
-    console_handler = logging.StreamHandler()
-    console_handler.setFormatter(formatter)
-    logger.addHandler(console_handler)
-
-    file_handler = RotatingFileHandler('discord_bot_errors.log', maxBytes=1024, backupCount=3)
-    file_handler.setFormatter(formatter)
-    logger.addHandler(file_handler)
-
-    return logger
 
 def is_youtube_link(url):
     youtube_patterns = [
@@ -100,7 +76,6 @@ def get_image_hash(image_path):
         with Image.open(image_path) as img:
             return imagehash.phash(img)
     except Exception as e:
-        logger.error(f"Error downloading image at : {str(e)}")
         raise
         print(f"Error hashing image: {e}")
         return None
@@ -129,7 +104,6 @@ def compare_to_banned_images(input_path, threshold=15):
                 if banned_hash and (input_hash - banned_hash) < threshold:
                     return True
         except Exception as e:
-            logger.error(f"Error comparing image at {filename}: {str(e)}")
             print(f"Error comparing {filename}: {e}")
     
     return False
@@ -234,15 +208,14 @@ intents.messages = True
 intents.message_content = True
 
 client = discord.Client(intents=intents)
-logger = setup_logger()
 @client.event
 async def on_ready():
     print(f"Logged in as {client.user}")
     if SCAN_OLD_MESSAGES:
         try:
             await process_old_messages(1253811202912682078)
-        except Exception as e:
-            logger.error(f"Error processing old messages: {str(e)}") 
+        except Exception as e: 
+            print(f"ooh an exception {e}")
     print("now scanning incomming messages")    
 
 @client.event
